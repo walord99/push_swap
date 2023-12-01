@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   cstack.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/12 15:10:27 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/01 12:26:17 by bplante          ###   ########.fr       */
+/*   Created: 2023/12/01 12:27:25 by bplante           #+#    #+#             */
+/*   Updated: 2023/12/01 14:13:42 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "push_swap.h"
 
-# include <libft.h>
-
-typedef struct s_cstack
+int swap_top2(t_cstack **stack)
 {
-	t_cstack	*previous;
-	int			num;
-	t_cstack	*next;
-}				t_cstack;
+	
+}
 
+int pop_push(t_cstack **src, t_cstack **dest)
+{
+	
+}
 
-#endif
+int rotate(t_cstack **stack)
+{
+
+}
+
+int rotate_reverse(t_cstack **stack)
+{
+	
+}
