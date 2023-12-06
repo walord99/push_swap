@@ -1,4 +1,8 @@
-FILES			= 	main.c
+FILES			= 	main.c \
+					cstack.c \
+					cstack_manip.c \
+					input_parsing.c
+							
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
 SRC				= 	$(addprefix src/, $(FILES))
@@ -13,7 +17,7 @@ LIBFT			= 	$(LIBFT_DIR)/libft.a
 INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR)
 #CC_DEBUG 		= 	-fsanitize=address -fno-omit-frame-pointer
 #L_DEBUG		=	-lasan
-ERROR_FLAGS 	= 	-Wall -Werror -Wextra
+#ERROR_FLAGS 	= 	-Wall -Werror -Wextra
 L_FLAGS			=	-lft
 
 all: $(NAME)
@@ -42,4 +46,4 @@ re: clean all
 valgrind:
 	valgrind --leak-check=full $(NAME)
 
-.PHONY: all, clean, fclean, re
+.PHONY: all clean fclean re

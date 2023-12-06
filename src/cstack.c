@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:09:49 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/06 14:18:31 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/06 15:18:21 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,18 @@ t_cstack	*cstack_add(t_cstack *cstack, int num)
 	new->previous = cstack->previous;
 	new->next = cstack;
 	cstack->previous = new;
-	return cstack;
+	if (cstack->next == cstack)
+		cstack->next = new;
+	else
+		cstack->previous->next = new;
+	return (cstack);
 }
 
 void	cstack_clear(t_cstack *cstack)
 {
-	t_cstack *start;
-	t_cstack *temp;
+	t_cstack	*start;
+	t_cstack	*temp;
+
 	start = cstack;
 	while (cstack != start)
 	{
