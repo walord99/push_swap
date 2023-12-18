@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:21:18 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/15 14:22:01 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 14:00:01 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,14 @@ t_cstack	*parse_inputs(char **args)
 
 int	is_num(char *str)
 {
-	while (str[0])
+	int i = 0;
+	if (str[i] == '-')
+		i++;
+	while (str[i])
 	{
-		if (!ft_isdigit(str[0]))
+		if (!ft_isdigit(str[i]))
 			return (false);
-		str++;
+		i++;
 	}
 	return (true);
 }

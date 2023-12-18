@@ -6,12 +6,13 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:09:49 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/15 14:44:02 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 13:59:39 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+//update to keep track of stack size
 t_cstack	*cstack_add(t_cstack *cstack, int num)
 {
 	t_cstack	*new;
@@ -43,19 +44,35 @@ t_cstack	*cstack_add(t_cstack *cstack, int num)
 
 void	cstack_clear(t_cstack *cstack)
 {
-	t_cstack	*start;
-	t_cstack	*temp;
+	t_cstack_ptrs	*start;
+	t_cstack_ptrs	*temp;
+	t_cstack_ptrs	*stack;
 
-	if (!cstack)
-		return ;
-	start = cstack;
-	temp = cstack;
-	cstack = cstack->next;
-	free(temp);
-	while (cstack != start)
+	stack = cstack->stack;
+	start = stack;
+	while (stack != start)
 	{
-		temp = cstack;
-		cstack = cstack->next;
+		temp = stack;
+		stack = stack->next;
 		free(temp);
 	}
+}
+
+int	update_size(t_cstack *cstack)
+{
+	int			i;
+	t_cstack_ptrs	*start;
+	t_cstack_ptrs *stack;
+
+	i = 0;
+
+	stack = cstack->stack;
+	start = cstack->stack;
+	while (stack != start)
+	{
+		stack = stack->next;
+		i++;
+	}
+	cstack->size = i;
+	return (i);
 }
