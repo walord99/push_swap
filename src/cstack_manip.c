@@ -6,28 +6,33 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 12:27:25 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/06 15:03:25 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 13:54:37 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	swap_top2(t_cstack **stack)
+void	swap_top2(t_cstack **stack)
 {
-	return (0);
+	if (stack[0] == stack[0]->next)
+		return ;
+	if (stack[0] == stack[0]->next->next)
+		rotate(stack);
+	else
+	{
+	}
 }
 
-int	pop_push(t_cstack **src, t_cstack **dest)
+void	pop_push(t_cstack **src, t_cstack **dest)
 {
-	return (0);
 }
 
-int	rotate(t_cstack **stack)
+void	rotate(t_cstack **stack)
 {
-	return (0);
+	*stack = stack[0]->next;
 }
 
-int	rotate_reverse(t_cstack **stack)
+void	rotate_reverse(t_cstack **stack)
 {
-	return (0);
+	*stack = stack[0]->previous;
 }

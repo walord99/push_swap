@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 15:09:40 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/06 18:05:00 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 13:54:43 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,5 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	cstack = parse_inputs(&argv[1]);
+	cstack_clear(cstack);
 }

@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:21:18 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/06 15:07:36 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/15 14:22:01 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_cstack	*parse_inputs(char **args)
 	int			num;
 
 	cstack = NULL;
-	while (args)
+	while (args[0])
 	{
 		if (is_num(args[0]))
 			cstack = cstack_add(cstack, ft_atoi(args[0]));
