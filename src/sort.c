@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 13:59:05 by bplante/Wal       #+#    #+#             */
-/*   Updated: 2023/12/17 22:53:23 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/18 15:36:58 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	distance_from_top(t_cstack_ptrs *element, t_cstack *cstack)
 	i = 0;
 	while (start != element)
 	{
-		stack = stack->previous;
+		start = start->previous;
 		i++;
 	}
 	return (distance <= i) * distance + (distance > i) * i *-1;
@@ -39,16 +39,14 @@ int	distance_from_top(t_cstack_ptrs *element, t_cstack *cstack)
 
 int	distance_from_pos(int num, t_cstack *stack)
 {
+	return 0;
 }
 
-int	sort(t_cstack *stack_a)
+void	sort(t_cstack *stack_a)
 {
-	t_cstack	*stack_b;
-	int			size_a;
-	int			size_b;
+	t_cstack	*stack_b = ft_calloc(1, sizeof(t_cstack));
 
-	size_a = cstack_size(stack_a);
-	size_b = 0;
-	pop_push(stack_a, stack_b, size_a, size_b);
-	pop_push(stack_a, stack_b, size_a, size_b);
+	pop_push(stack_a, stack_b);
+	pop_push(stack_a, stack_b);
+	pop_push(stack_a, stack_b);
 }

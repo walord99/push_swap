@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:21:18 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/18 14:00:01 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 15:11:16 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ static int	is_num(char *str);
 
 t_cstack	*parse_inputs(char **args)
 {
-	t_cstack	*cstack;
-	int			num;
+	t_cstack	*cstack = ft_calloc(1, sizeof(t_cstack));
 
-	cstack = NULL;
 	while (args[0])
 	{
 		if (is_num(args[0]))
-			cstack = cstack_add(cstack, ft_atoi(args[0]));
+			cstack_add(cstack, ft_atoi(args[0]));
 		else
 		{
 			cstack_clear(cstack);

@@ -1,7 +1,8 @@
 FILES			= 	main.c \
 					cstack.c \
 					cstack_manip.c \
-					input_parsing.c
+					input_parsing.c \
+					sort.c
 							
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj

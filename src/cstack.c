@@ -6,40 +6,43 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:09:49 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/18 13:59:39 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 15:16:22 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-//update to keep track of stack size
-t_cstack	*cstack_add(t_cstack *cstack, int num)
+// update to keep track of stack size
+void	cstack_add(t_cstack *cstack, int num)
 {
-	t_cstack	*new;
+	t_cstack_ptrs	*new;
+	t_cstack_ptrs	*stack;
 
-	new = ft_calloc(1, sizeof(t_cstack));
+	stack = cstack->stack;
+	new = ft_calloc(1, sizeof(t_cstack_ptrs));
 	new->num = num;
-	if (!cstack)
+	if (!stack)
 	{
 		new->previous = new;
 		new->next = new;
-		return (new);
+		stack = new;
 	}
-	if (cstack->next == cstack)
+	if (stack->next == stack)
 	{
-		cstack->next = new;
-		cstack->previous = new;
-		new->next = cstack;
-		new->previous = cstack;
+		stack->next = new;
+		stack->previous = new;
+		new->next = stack;
+		new->previous = stack;
 	}
 	else
 	{
-		new->previous = cstack->previous;
-		new->next = cstack;
-		cstack->previous->next = new;
-		cstack->previous = new;
+		new->previous = stack->previous;
+		new->next = stack;
+		stack->previous->next = new;
+		stack->previous = new;
 	}
-	return (cstack);
+	cstack->stack = stack;
+	cstack->size++;
 }
 
 void	cstack_clear(t_cstack *cstack)
@@ -50,6 +53,10 @@ void	cstack_clear(t_cstack *cstack)
 
 	stack = cstack->stack;
 	start = stack;
+
+	temp = stack;
+	stack = stack->next;
+	free(temp);
 	while (stack != start)
 	{
 		temp = stack;
@@ -60,12 +67,11 @@ void	cstack_clear(t_cstack *cstack)
 
 int	update_size(t_cstack *cstack)
 {
-	int			i;
+	int				i;
 	t_cstack_ptrs	*start;
-	t_cstack_ptrs *stack;
+	t_cstack_ptrs	*stack;
 
 	i = 0;
-
 	stack = cstack->stack;
 	start = cstack->stack;
 	while (stack != start)
