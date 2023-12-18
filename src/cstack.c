@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:09:49 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/18 15:16:22 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 16:14:52 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,4 @@ void	cstack_clear(t_cstack *cstack)
 		stack = stack->next;
 		free(temp);
 	}
-}
-
-int	update_size(t_cstack *cstack)
-{
-	int				i;
-	t_cstack_ptrs	*start;
-	t_cstack_ptrs	*stack;
-
-	i = 0;
-	stack = cstack->stack;
-	start = cstack->stack;
-	while (stack != start)
-	{
-		stack = stack->next;
-		i++;
-	}
-	cstack->size = i;
-	return (i);
 }

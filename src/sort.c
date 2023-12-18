@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 13:59:05 by bplante/Wal       #+#    #+#             */
-/*   Updated: 2023/12/18 15:36:58 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 16:16:39 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,18 @@ int	distance_from_top(t_cstack_ptrs *element, t_cstack *cstack)
 
 int	distance_from_pos(int num, t_cstack *stack)
 {
-	return 0;
+	
+}
+
+int spin(t_cstack *stack_a, t_cstack *stack_b, int a_rot, int b_rot)
+{
+	//check if stack a and or b are spinable both ways to optimize rotates
 }
 
 void	sort(t_cstack *stack_a)
 {
 	t_cstack	*stack_b = ft_calloc(1, sizeof(t_cstack));
 
-	pop_push(stack_a, stack_b);
 	pop_push(stack_a, stack_b);
 	pop_push(stack_a, stack_b);
 }

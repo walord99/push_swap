@@ -6,14 +6,15 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 12:27:25 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/18 15:41:27 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 16:17:05 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	swap_top2(t_cstack *stack)
-{
+void	swap_top2(t_cstack *cstack)
+{	
+	//u need pen paper for this	
 }
 
 void	pop_push(t_cstack *src, t_cstack *dest)
