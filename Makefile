@@ -1,6 +1,6 @@
 FILES			= 	main.c \
-					cstack/cstack.c \
-					cstack/cstack_manip.c \
+					cstack.c \
+					cstack_manip.c \
 					input_parsing.c \
 					sort.c
 							
@@ -24,11 +24,10 @@ L_FLAGS			=	-lft
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
-	$(CC) $(addprefix $(OBJ_DIR)/, $(notdir $(OBJ))) -L$(LIBFT_DIR) $(L_FLAGS) -o $(NAME)
+	$(CC) $(OBJ) -L$(LIBFT_DIR) $(L_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $(OBJ_DIR)/$(notdir $@) -g
-	@printf '%-30s -> %30s\n' "$<" "$(notdir $@)"
+	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
