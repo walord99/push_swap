@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cstack.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:09:49 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/18 16:14:52 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/18 22:00:39 by bplante/Wal      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	cstack_clear(t_cstack *cstack)
 
 	stack = cstack->stack;
 	start = stack;
-
 	temp = stack;
 	stack = stack->next;
 	free(temp);
@@ -62,5 +61,29 @@ void	cstack_clear(t_cstack *cstack)
 		temp = stack;
 		stack = stack->next;
 		free(temp);
+	}
+}
+
+void	update_min_max(t_cstack *cstack)
+{
+	t_cstack_ptrs	*start;
+	t_cstack_ptrs	*stack;
+
+	cstack->min = INT_MAX;
+	cstack->max = INT_MIN;
+	stack = cstack->stack;
+	start = stack;
+	if (stack->num < cstack->min)
+		cstack->min = stack->num;
+	if (stack->num > cstack->max)
+		cstack->max = stack->num;
+	stack = stack->next;
+	while (stack != start)
+	{
+		if (stack->num < cstack->min)
+			cstack->min = stack->num;
+		if (stack->num > cstack->max)
+			cstack->max = stack->num;
+		stack = stack->next;
 	}
 }
