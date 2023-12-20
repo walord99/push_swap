@@ -138,7 +138,7 @@ t_cstack_ptrs	*find_least_move(struct stack_pair *sp)
 		}
 		stack = stack->next;
 	}
-	return (stack);
+	return (least_elem);
 }
 
 int	count_move_to_pos(struct stack_pair *sp, t_cstack_ptrs *element)
@@ -148,19 +148,16 @@ int	count_move_to_pos(struct stack_pair *sp, t_cstack_ptrs *element)
 	bool	ambi[2];
 
 	get_move_info(pos, ambi, sp, element);
-	if (ambi[_src] && ambi[_dst])
-		ret = (pos[_src] >= pos[_dst]) * pos[_src] + (pos[_dst] > pos[_src])
-			* pos[_dst];
+	if ((pos[_src] > 0 && pos[_dst] > 0) || (pos[_src] < 0
+			&& pos[_dst] < 0))
+		ret = (abs(pos[_src]) >= abs(pos[_dst])) * abs(pos[_src])
+			+ (abs(pos[_dst]) > abs(pos[_src])) * abs(pos[_dst]);
 	else if (ambi[_src] && !ambi[_dst])
 		ret = (pos[_src] >= abs(pos[_dst])) * pos[_src]
 			+ (abs(pos[_dst]) > pos[_src]) * abs(pos[_dst]);
 	else if (!ambi[_src] && ambi[_dst])
 		ret = (abs(pos[_src]) >= pos[_dst]) * abs(pos[_src])
 			+ (pos[_dst] > abs(pos[_src])) * pos[_dst];
-	else if ((pos[_src] > 0 && pos[_dst] > 0) || (pos[_src] < 0
-			&& pos[_dst] < 0))
-		ret = (abs(pos[_src]) >= abs(pos[_dst])) * abs(pos[_src])
-			+ (abs(pos[_dst]) > abs(pos[_src])) * abs(pos[_dst]);
 	else
 		ret = abs(pos[_src]) + abs(pos[_dst]);
 	return (ret + 1);
