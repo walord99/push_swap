@@ -6,7 +6,7 @@
 /*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:21:18 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/18 22:12:51 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/19 23:16:31 by bplante/Wal      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_cstack	*parse_inputs(char **args)
 	t_cstack	*cstack;
 
 	cstack = ft_calloc(1, sizeof(t_cstack));
+	cstack->name = 'a';
 	while (args[0])
 	{
 		if (is_num(args[0]))

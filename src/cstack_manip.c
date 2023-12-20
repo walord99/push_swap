@@ -6,7 +6,7 @@
 /*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 12:27:25 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/19 00:30:05 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/19 23:36:00 by bplante/Wal      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	swap_top2(t_cstack *cstack)
 	new_scnd->next = rem_next;
 	rem_next->previous = new_scnd;
 	cstack->stack = new_first;
+	ft_printf("s%c\n", cstack->name);
 }
 
 void	pop_push(t_cstack *src, t_cstack *dest)
@@ -66,14 +67,31 @@ void	pop_push(t_cstack *src, t_cstack *dest)
 	dest->stack = element;
 	dest->size++;
 	update_min_max(dest);
+	ft_printf("p%c\n", dest->name);
 }
 
 void	rotate(t_cstack *stack)
 {
 	stack->stack = stack->stack->next;
+	ft_printf("r%c\n", stack->name);
 }
 
 void	rotate_reverse(t_cstack *stack)
 {
 	stack->stack = stack->stack->previous;
+	ft_printf("rr%c\n", stack->name);
+}
+
+void	rotate_both(t_cstack *stack_a, t_cstack *stack_b)
+{
+	stack_a->stack = stack_a->stack->next;
+	stack_b->stack = stack_b->stack->next;
+	ft_printf("rr\n");
+}
+
+void	rotate_reverse_both(t_cstack *stack_a, t_cstack *stack_b)
+{
+	stack_a->stack = stack_a->stack->previous;
+	stack_b->stack = stack_b->stack->previous;
+	ft_printf("rrr\n");
 }

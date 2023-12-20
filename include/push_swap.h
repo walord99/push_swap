@@ -6,7 +6,7 @@
 /*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 15:10:27 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/18 21:41:09 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/19 23:35:38 by bplante/Wal      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_cstack
 	int						max;
 	int						size;
 	t_cstack_ptrs			*stack;
+	char					name;
 }							t_cstack;
 
 void						cstack_clear(t_cstack *cstack);
@@ -39,6 +40,8 @@ t_cstack					*parse_inputs(char **args);
 
 void						rotate_reverse(t_cstack *stack);
 void						rotate(t_cstack *stack);
+void						rotate_both(t_cstack *stack_a, t_cstack *stack_b);
+void						rotate_reverse_both(t_cstack *sa, t_cstack *sb);
 void						pop_push(t_cstack *src, t_cstack *dest);
 void						swap_top2(t_cstack *stack);
 
