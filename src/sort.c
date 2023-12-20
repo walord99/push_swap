@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 13:59:05 by bplante/Wal       #+#    #+#             */
-/*   Updated: 2023/12/20 00:10:00 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/20 16:20:23 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ static int		count_move_to_pos(struct s_stack_pair *sp,
 
 int	distance_from_top(t_cstack_ptrs *element, t_cstack *cstack)
 {
-	t_cstack_ptrs	*start;
 	t_cstack_ptrs	*stack;
 	int				p_dist;
 	int				n_dist;
 
 	stack = cstack->stack;
-	start = stack;
 	p_dist = 0;
 	while (stack != element)
 	{
@@ -35,7 +33,7 @@ int	distance_from_top(t_cstack_ptrs *element, t_cstack *cstack)
 	return ((p_dist <= n_dist) * p_dist + (p_dist > n_dist) * n_dist * -1);
 }
 
-int	distance_from_pos(int num, t_cstack *cstack)
+int	distance_from_pos_desc(int num, t_cstack *cstack)
 {
 	t_cstack_ptrs	*stack;
 
@@ -49,21 +47,54 @@ int	distance_from_pos(int num, t_cstack *cstack)
 	{
 		if (num > stack->num && num < stack->previous->num)
 			break ;
-		if (num > stack->num && num > cstack->max
-			&& stack->previous->num == cstack->min)
+		if (num > stack->num && num > cstack->max->num
+			&& stack->previous == cstack->min)
 			break ;
-		if (num < stack->num && num < cstack->min && stack->num == cstack->max)
+		if (num < stack->num && num < cstack->min->num && stack == cstack->max)
 			break ;
 		stack = stack->next;
 	}
 	return (distance_from_top(stack, cstack));
 }
 
-void	get_move_info(int *pos, bool *ambi, struct s_stack_pair *sp,
+int	distance_from_pos_asc(int num, t_cstack *cstack)
+{
+	t_cstack_ptrs	*stack;
+
+	stack = cstack->stack;
+	// while (!((num > stack->num && num < stack->previous->num)
+	// 		|| (num > stack->num && num > cstack->max
+	// 			&& stack->num == cstack->min) || (num < stack->num
+	// 			&& num < cstack->min && stack->num == cstack->max)))
+	// 	stack = stack->next;
+	while (true)
+	{
+		if (num < stack->num && num > stack->previous->num)
+			break ;
+		if ((num > cstack->max->num || num < cstack->min->num)
+			&& stack->previous == cstack->max)
+			break ;
+		stack = stack->next;
+	}
+	return (distance_from_top(stack, cstack));
+}
+
+void	get_move_info_asc(int *pos, bool *ambi, struct s_stack_pair *sp,
 		t_cstack_ptrs *element)
 {
 	pos[_SRC] = distance_from_top(element, sp->stack_a);
-	pos[_DST] = distance_from_pos(element->num, sp->stack_b);
+	pos[_DST] = distance_from_pos_asc(element->num, sp->stack_b);
+	ambi[_SRC] = abs(pos[_SRC]) == sp->stack_a->size / 2 && sp->stack_a->size
+		% 2 == 0;
+	ambi[_DST] = abs(pos[_DST]) == sp->stack_b->size / 2 && sp->stack_b->size
+		% 2 == 0;
+}
+
+void	get_move_info_desc(int *pos, bool *ambi, struct s_stack_pair *sp,
+		t_cstack_ptrs *element)
+{
+	pos[_SRC] = distance_from_top(element, sp->stack_a);
+	pos[_DST] = distance_from_pos_desc(element->num, sp->stack_b);
 	ambi[_SRC] = abs(pos[_SRC]) == sp->stack_a->size / 2 && sp->stack_a->size
 		% 2 == 0;
 	ambi[_DST] = abs(pos[_DST]) == sp->stack_b->size / 2 && sp->stack_b->size
@@ -96,13 +127,17 @@ void	spin_direction_optimiser(int *rot, int *pos, bool *ambi)
 	}
 }
 
-void	find_moves(struct s_stack_pair *sp, t_cstack_ptrs *element)
+void	find_moves(struct s_stack_pair *sp, t_cstack_ptrs *element,
+		int direction)
 {
 	int		rot[2];
 	bool	ambi[2];
 	int		pos[2];
 
-	get_move_info(pos, ambi, sp, element);
+	if (direction == -1)
+		get_move_info_desc(pos, ambi, sp, element);
+	if (direction == 1)
+		get_move_info_asc(pos, ambi, sp, element);
 	spin_direction_optimiser(rot, pos, ambi);
 	spin(sp, rot);
 }
@@ -112,16 +147,11 @@ t_cstack_ptrs	*find_least_move(struct s_stack_pair *sp)
 	int				min;
 	t_cstack_ptrs	*least_elem;
 	t_cstack_ptrs	*stack;
-	t_cstack_ptrs	*stack_start;
 
 	min = INT_MAX;
 	least_elem = NULL;
 	stack = sp->stack_a->stack;
-	stack_start = stack;
-	min = count_move_to_pos(sp, stack);
-	least_elem = stack;
-	stack = stack->next;
-	while (stack != stack_start)
+	while (true)
 	{
 		if (count_move_to_pos(sp, stack) < min)
 		{
@@ -129,6 +159,8 @@ t_cstack_ptrs	*find_least_move(struct s_stack_pair *sp)
 			least_elem = stack;
 		}
 		stack = stack->next;
+		if (stack == sp->stack_a->stack)
+			break ;
 	}
 	return (least_elem);
 }
@@ -139,7 +171,7 @@ int	count_move_to_pos(struct s_stack_pair *sp, t_cstack_ptrs *element)
 	int		pos[2];
 	bool	ambi[2];
 
-	get_move_info(pos, ambi, sp, element);
+	get_move_info_desc(pos, ambi, sp, element);
 	if ((pos[_SRC] > 0 && pos[_DST] > 0) || (pos[_SRC] < 0 && pos[_DST] < 0))
 		ret = (abs(pos[_SRC]) >= abs(pos[_DST])) * abs(pos[_SRC])
 			+ (abs(pos[_DST]) > abs(pos[_SRC])) * abs(pos[_DST]);
@@ -207,6 +239,61 @@ void	spin(struct s_stack_pair *sp, int *rot)
 	pop_push(sp->stack_a, sp->stack_b);
 }
 
+void	last_spin(t_cstack *cstack)
+{
+	int	spin;
+	int	spin_dir;
+
+	spin = distance_from_top(cstack->min, cstack);
+	spin_dir = 1;
+	if (spin > 0)
+		spin_dir = -1;
+	while(spin != 0)
+	{
+		if (spin > 0)
+			rotate(cstack);
+		if (spin < 0)
+			rotate_reverse(cstack);
+		spin += spin_dir;
+	}
+}
+
+void	sort_small(t_cstack *cstack)
+{
+	t_cstack_ptrs	*stack;
+	int				dist;
+
+	update_min_max(cstack);
+	stack = cstack->stack;
+	while (true)
+	{
+		if (stack->num > stack->next->num && stack->next != cstack->min)
+		{
+			swap_top2(cstack);
+			break ;
+		}
+		stack = stack->next;
+		if (stack == cstack->stack)
+			break ;
+	}
+	while (stack != cstack->min)
+		stack = stack->next;
+	dist = distance_from_top(stack, cstack);
+	if (dist > 0)
+		rotate(cstack);
+	if (dist < 0)
+		rotate_reverse(cstack);
+}
+
+void	swap_stack_pair(struct s_stack_pair *sp)
+{
+	t_cstack	*temp;
+
+	temp = sp->stack_a;
+	sp->stack_a = sp->stack_b;
+	sp->stack_b = temp;
+}
+
 void	sort(t_cstack *stack_a)
 {
 	struct s_stack_pair	sp;
@@ -218,11 +305,16 @@ void	sort(t_cstack *stack_a)
 	pop_push(sp.stack_a, sp.stack_b);
 	pop_push(sp.stack_a, sp.stack_b);
 	update_min_max(sp.stack_b);
-	ft_printf("<------>\n");
 	while (sp.stack_a->size > 3)
 	{
 		least = find_least_move(&sp);
-		find_moves(&sp, least);
-		ft_printf("<------>\n");
+		find_moves(&sp, least, -1);
 	}
+	sort_small(sp.stack_a);
+	swap_stack_pair(&sp);
+	while (sp.stack_a->size != 0)
+	{
+		find_moves(&sp, sp.stack_a->stack, 1);
+	}
+	last_spin(sp.stack_b);
 }

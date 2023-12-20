@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 15:10:27 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/19 23:35:38 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/20 13:31:33 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_cstack_ptrs
 
 typedef struct s_cstack
 {
-	int						min;
-	int						max;
+	t_cstack_ptrs			*min;
+	t_cstack_ptrs			*max;
 	int						size;
 	t_cstack_ptrs			*stack;
 	char					name;
@@ -38,11 +38,11 @@ struct						s_stack_pair
 	t_cstack				*stack_b;
 };
 
-struct			s_rotate_func
+struct						s_rotate_func
 {
-	void		(*a_func)(t_cstack *);
-	void		(*b_func)(t_cstack *);
-	void		(*both_func)(t_cstack *, t_cstack *);
+	void					(*a_func)(t_cstack *);
+	void					(*b_func)(t_cstack *);
+	void					(*both_func)(t_cstack *, t_cstack *);
 };
 
 # define _SRC 0
