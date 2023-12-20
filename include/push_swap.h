@@ -32,6 +32,22 @@ typedef struct s_cstack
 	char					name;
 }							t_cstack;
 
+struct						s_stack_pair
+{
+	t_cstack				*stack_a;
+	t_cstack				*stack_b;
+};
+
+struct			s_rotate_func
+{
+	void		(*a_func)(t_cstack *);
+	void		(*b_func)(t_cstack *);
+	void		(*both_func)(t_cstack *, t_cstack *);
+};
+
+# define _SRC 0
+# define _DST 1
+
 void						cstack_clear(t_cstack *cstack);
 void						cstack_add(t_cstack *cstack, int num);
 void						update_min_max(t_cstack *cstack);

@@ -12,17 +12,8 @@
 
 #include "push_swap.h"
 
-struct			stack_pair
-{
-	t_cstack	*stack_a;
-	t_cstack	*stack_b;
-};
-
-#define _src 0
-#define _dst 1
-
-static void		spin(struct stack_pair *sp, int *rot);
-static int		count_move_to_pos(struct stack_pair *sp,
+static void		spin(struct s_stack_pair *sp, int *rot);
+static int		count_move_to_pos(struct s_stack_pair *sp,
 					t_cstack_ptrs *element);
 
 int	distance_from_top(t_cstack_ptrs *element, t_cstack *cstack)
@@ -58,7 +49,8 @@ int	distance_from_pos(int num, t_cstack *cstack)
 	{
 		if (num > stack->num && num < stack->previous->num)
 			break ;
-		if (num > stack->num && num > cstack->max && stack->previous->num == cstack->min)
+		if (num > stack->num && num > cstack->max
+			&& stack->previous->num == cstack->min)
 			break ;
 		if (num < stack->num && num < cstack->min && stack->num == cstack->max)
 			break ;
@@ -67,44 +59,44 @@ int	distance_from_pos(int num, t_cstack *cstack)
 	return (distance_from_top(stack, cstack));
 }
 
-void	get_move_info(int *pos, bool *ambi, struct stack_pair *sp,
+void	get_move_info(int *pos, bool *ambi, struct s_stack_pair *sp,
 		t_cstack_ptrs *element)
 {
-	pos[_src] = distance_from_top(element, sp->stack_a);
-	pos[_dst] = distance_from_pos(element->num, sp->stack_b);
-	ambi[_src] = abs(pos[_src]) == sp->stack_a->size / 2 && sp->stack_a->size
+	pos[_SRC] = distance_from_top(element, sp->stack_a);
+	pos[_DST] = distance_from_pos(element->num, sp->stack_b);
+	ambi[_SRC] = abs(pos[_SRC]) == sp->stack_a->size / 2 && sp->stack_a->size
 		% 2 == 0;
-	ambi[_dst] = abs(pos[_dst]) == sp->stack_b->size / 2 && sp->stack_b->size
+	ambi[_DST] = abs(pos[_DST]) == sp->stack_b->size / 2 && sp->stack_b->size
 		% 2 == 0;
 }
 
 void	spin_direction_optimiser(int *rot, int *pos, bool *ambi)
 {
-	if (ambi[_src] && ambi[_dst])
+	if (ambi[_SRC] && ambi[_DST])
 	{
-		rot[_src] = pos[_src];
-		rot[_dst] = pos[_dst];
+		rot[_SRC] = pos[_SRC];
+		rot[_DST] = pos[_DST];
 	}
-	else if (ambi[_src] && !ambi[_dst])
+	else if (ambi[_SRC] && !ambi[_DST])
 	{
-		rot[_src] = (pos[_src] * -1) * (pos[_dst] <= 0) + pos[_src]
-			* (pos[_dst] > 0);
-		rot[_dst] = pos[_dst];
+		rot[_SRC] = (pos[_SRC] * -1) * (pos[_DST] <= 0) + pos[_SRC]
+			* (pos[_DST] > 0);
+		rot[_DST] = pos[_DST];
 	}
-	else if (!ambi[_src] && ambi[_dst])
+	else if (!ambi[_SRC] && ambi[_DST])
 	{
-		rot[_src] = pos[_src];
-		rot[_dst] = (pos[_dst] * -1) * (pos[_src] <= 0) + pos[_dst]
-			* (pos[_src] > 0);
+		rot[_SRC] = pos[_SRC];
+		rot[_DST] = (pos[_DST] * -1) * (pos[_SRC] <= 0) + pos[_DST]
+			* (pos[_SRC] > 0);
 	}
 	else
 	{
-		rot[_src] = pos[_src];
-		rot[_dst] = pos[_dst];
+		rot[_SRC] = pos[_SRC];
+		rot[_DST] = pos[_DST];
 	}
 }
 
-void	find_moves(struct stack_pair *sp, t_cstack_ptrs *element)
+void	find_moves(struct s_stack_pair *sp, t_cstack_ptrs *element)
 {
 	int		rot[2];
 	bool	ambi[2];
@@ -115,7 +107,7 @@ void	find_moves(struct stack_pair *sp, t_cstack_ptrs *element)
 	spin(sp, rot);
 }
 
-t_cstack_ptrs	*find_least_move(struct stack_pair *sp)
+t_cstack_ptrs	*find_least_move(struct s_stack_pair *sp)
 {
 	int				min;
 	t_cstack_ptrs	*least_elem;
@@ -141,54 +133,46 @@ t_cstack_ptrs	*find_least_move(struct stack_pair *sp)
 	return (least_elem);
 }
 
-int	count_move_to_pos(struct stack_pair *sp, t_cstack_ptrs *element)
+int	count_move_to_pos(struct s_stack_pair *sp, t_cstack_ptrs *element)
 {
 	int		ret;
 	int		pos[2];
 	bool	ambi[2];
 
 	get_move_info(pos, ambi, sp, element);
-	if ((pos[_src] > 0 && pos[_dst] > 0) || (pos[_src] < 0
-			&& pos[_dst] < 0))
-		ret = (abs(pos[_src]) >= abs(pos[_dst])) * abs(pos[_src])
-			+ (abs(pos[_dst]) > abs(pos[_src])) * abs(pos[_dst]);
-	else if (ambi[_src] && !ambi[_dst])
-		ret = (pos[_src] >= abs(pos[_dst])) * pos[_src]
-			+ (abs(pos[_dst]) > pos[_src]) * abs(pos[_dst]);
-	else if (!ambi[_src] && ambi[_dst])
-		ret = (abs(pos[_src]) >= pos[_dst]) * abs(pos[_src])
-			+ (pos[_dst] > abs(pos[_src])) * pos[_dst];
+	if ((pos[_SRC] > 0 && pos[_DST] > 0) || (pos[_SRC] < 0 && pos[_DST] < 0))
+		ret = (abs(pos[_SRC]) >= abs(pos[_DST])) * abs(pos[_SRC])
+			+ (abs(pos[_DST]) > abs(pos[_SRC])) * abs(pos[_DST]);
+	else if (ambi[_SRC] && !ambi[_DST])
+		ret = (pos[_SRC] >= abs(pos[_DST])) * pos[_SRC]
+			+ (abs(pos[_DST]) > pos[_SRC]) * abs(pos[_DST]);
+	else if (!ambi[_SRC] && ambi[_DST])
+		ret = (abs(pos[_SRC]) >= pos[_DST]) * abs(pos[_SRC])
+			+ (pos[_DST] > abs(pos[_SRC])) * pos[_DST];
 	else
-		ret = abs(pos[_src]) + abs(pos[_dst]);
+		ret = abs(pos[_SRC]) + abs(pos[_DST]);
 	return (ret + 1);
 }
 
-struct			rotate_func
+void	set_rotate_func(struct s_rotate_func *rf, int *rot)
 {
-	void		(*a_func)(t_cstack *);
-	void		(*b_func)(t_cstack *);
-	void		(*both_func)(t_cstack *, t_cstack *);
-};
-
-void	set_rotate_func(struct rotate_func *rf, int *rot)
-{
-	if (rot[_src] >= 0)
+	if (rot[_SRC] >= 0)
 		rf->a_func = &rotate;
 	else
 		rf->a_func = &rotate_reverse;
-	if (rot[_dst] >= 0)
+	if (rot[_DST] >= 0)
 		rf->b_func = &rotate;
 	else
 		rf->b_func = &rotate_reverse;
-	if (rot[_src] >= 0 && rot[_dst] >= 0)
+	if (rot[_SRC] >= 0 && rot[_DST] >= 0)
 		rf->both_func = &rotate_both;
-	else if (rot[_src] < 0 && rot[_dst] < 0)
+	else if (rot[_SRC] < 0 && rot[_DST] < 0)
 		rf->both_func = &rotate_reverse_both;
 	else
 		rf->both_func = NULL;
 }
 
-void	apply_spin(struct rotate_func *rf, int *rot, struct stack_pair *sp)
+void	apply_spin(struct s_rotate_func *rf, int *rot, struct s_stack_pair *sp)
 {
 	int	ad;
 	int	bd;
@@ -196,27 +180,27 @@ void	apply_spin(struct rotate_func *rf, int *rot, struct stack_pair *sp)
 
 	ad = (rf->a_func == &rotate) * -1 + (rf->a_func == &rotate_reverse) * 1;
 	bd = (rf->b_func == &rotate) * -1 + (rf->b_func == &rotate_reverse) * 1;
-	while (rot[_src] != 0 && rot[_dst] != 0 && rf->both_func != NULL)
+	while (rot[_SRC] != 0 && rot[_DST] != 0 && rf->both_func != NULL)
 	{
 		rf->both_func(sp->stack_a, sp->stack_b);
-		rot[_src] += ad;
-		rot[_dst] += bd;
+		rot[_SRC] += ad;
+		rot[_DST] += bd;
 	}
-	while (rot[_src] != 0)
+	while (rot[_SRC] != 0)
 	{
 		rf->a_func(sp->stack_a);
-		rot[_src] += ad;
+		rot[_SRC] += ad;
 	}
-	while (rot[_dst] != 0)
+	while (rot[_DST] != 0)
 	{
 		rf->b_func(sp->stack_b);
-		rot[_dst] += bd;
+		rot[_DST] += bd;
 	}
 }
 
-void	spin(struct stack_pair *sp, int *rot)
+void	spin(struct s_stack_pair *sp, int *rot)
 {
-	struct rotate_func	rf;
+	struct s_rotate_func	rf;
 
 	set_rotate_func(&rf, rot);
 	apply_spin(&rf, rot, sp);
@@ -225,7 +209,7 @@ void	spin(struct stack_pair *sp, int *rot)
 
 void	sort(t_cstack *stack_a)
 {
-	struct stack_pair	sp;
+	struct s_stack_pair	sp;
 	t_cstack_ptrs		*least;
 
 	sp.stack_a = stack_a;
@@ -234,7 +218,7 @@ void	sort(t_cstack *stack_a)
 	pop_push(sp.stack_a, sp.stack_b);
 	pop_push(sp.stack_a, sp.stack_b);
 	update_min_max(sp.stack_b);
-			ft_printf("<------>\n");
+	ft_printf("<------>\n");
 	while (sp.stack_a->size > 3)
 	{
 		least = find_least_move(&sp);
