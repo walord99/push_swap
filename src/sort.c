@@ -85,8 +85,7 @@ void	get_move_info_asc(int *pos, bool *ambi, struct s_stack_pair *sp,
 	pos[_SRC] = 0;
 	pos[_DST] = distance_from_pos_asc(element->num, sp->stack_b);
 	ambi[_SRC] = false;
-	ambi[_DST] = abs(pos[_DST]) == sp->stack_b->size / 2 && sp->stack_b->size
-		% 2 == 0;
+	ambi[_DST] = false;
 }
 
 void	get_move_info_desc(int *pos, bool *ambi, struct s_stack_pair *sp,
