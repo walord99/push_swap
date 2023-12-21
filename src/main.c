@@ -21,9 +21,9 @@ bool	is_sorted(t_cstack *cstack)
 	{
 		if (stack->num > stack->next->num && stack->next != cstack->stack)
 			return (false);
+		stack = stack->next;
 		if (stack == cstack->stack)
 			break ;
-		stack = stack->next;
 	}
 	return (true);
 }
