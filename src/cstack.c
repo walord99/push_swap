@@ -66,15 +66,13 @@ void	cstack_clear(t_cstack *cstack)
 
 void	update_min_max(t_cstack *cstack)
 {
-	t_cstack_ptrs	*start;
 	t_cstack_ptrs	*stack;
 
 	stack = cstack->stack;
-	start = stack;
 	cstack->min = stack;
 	cstack->max = stack;
 	stack = stack->next;
-	while (stack != start)
+	while (stack != cstack->stack)
 	{
 		if (stack->num < cstack->min->num)
 			cstack->min = stack;

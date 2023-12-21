@@ -12,6 +12,22 @@
 
 #include "push_swap.h"
 
+bool	is_sorted(t_cstack *cstack)
+{
+	t_cstack_ptrs	*stack;
+
+	stack = cstack->stack;
+	while (true)
+	{
+		if (stack->num > stack->next->num && stack->next != cstack->stack)
+			return (false);
+		if (stack == cstack->stack)
+			break ;
+		stack = stack->next;
+	}
+	return (true);
+}
+
 int	main(int argc, char **argv)
 {
 	t_cstack	*cstack;
@@ -22,6 +38,10 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	cstack = parse_inputs(&argv[1]);
-	sort(cstack);
+	if (cstack == NULL)
+		return (1);
+	if (!is_sorted(cstack))
+		sort(cstack);
 	cstack_clear(cstack);
+	free(cstack);
 }

@@ -82,10 +82,9 @@ int	distance_from_pos_asc(int num, t_cstack *cstack)
 void	get_move_info_asc(int *pos, bool *ambi, struct s_stack_pair *sp,
 		t_cstack_ptrs *element)
 {
-	pos[_SRC] = distance_from_top(element, sp->stack_a);
+	pos[_SRC] = 0;
 	pos[_DST] = distance_from_pos_asc(element->num, sp->stack_b);
-	ambi[_SRC] = abs(pos[_SRC]) == sp->stack_a->size / 2 && sp->stack_a->size
-		% 2 == 0;
+	ambi[_SRC] = false;
 	ambi[_DST] = abs(pos[_DST]) == sp->stack_b->size / 2 && sp->stack_b->size
 		% 2 == 0;
 }
@@ -248,7 +247,7 @@ void	last_spin(t_cstack *cstack)
 	spin_dir = 1;
 	if (spin > 0)
 		spin_dir = -1;
-	while(spin != 0)
+	while (spin != 0)
 	{
 		if (spin > 0)
 			rotate(cstack);
@@ -302,9 +301,12 @@ void	sort(t_cstack *stack_a)
 	sp.stack_a = stack_a;
 	sp.stack_b = ft_calloc(1, sizeof(t_cstack));
 	sp.stack_b->name = 'b';
-	pop_push(sp.stack_a, sp.stack_b);
-	pop_push(sp.stack_a, sp.stack_b);
-	update_min_max(sp.stack_b);
+	if (stack_a->size > 3)
+		pop_push(sp.stack_a, sp.stack_b);
+	if (stack_a->size > 4)
+		pop_push(sp.stack_a, sp.stack_b);
+	if (sp.stack_b->size > 0)
+		update_min_max(sp.stack_b);
 	while (sp.stack_a->size > 3)
 	{
 		least = find_least_move(&sp);
