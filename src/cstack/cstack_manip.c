@@ -6,7 +6,7 @@
 /*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 12:27:25 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/19 23:36:00 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/21 15:17:41 by bplante/Wal      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ void	swap_top2(t_cstack *cstack)
 	ft_printf("s%c\n", cstack->name);
 }
 
+void	update_min_max(t_cstack_ptrs *element, t_cstack *cstack)
+{
+	if (cstack->min == NULL || element->num < cstack->min->num)
+		cstack->min = element;
+	else if (cstack->max == NULL || element->num > cstack->max->num)
+		cstack->max = element;
+}
+
 void	pop_push(t_cstack *src, t_cstack *dest)
 {
 	t_cstack_ptrs	*element;
@@ -58,40 +66,9 @@ void	pop_push(t_cstack *src, t_cstack *dest)
 		element->previous = element;
 	}
 	else
-	{
-		element->next = dest->stack;
-		element->previous = dest->stack->previous;
-		element->next->previous = element;
-		element->previous->next = element;
-	}
+		link_new_to_top(element, dest);
 	dest->stack = element;
 	dest->size++;
-	update_min_max(dest);
+	update_min_max(element, dest);
 	ft_printf("p%c\n", dest->name);
-}
-
-void	rotate(t_cstack *stack)
-{
-	stack->stack = stack->stack->next;
-	ft_printf("r%c\n", stack->name);
-}
-
-void	rotate_reverse(t_cstack *stack)
-{
-	stack->stack = stack->stack->previous;
-	ft_printf("rr%c\n", stack->name);
-}
-
-void	rotate_both(t_cstack *stack_a, t_cstack *stack_b)
-{
-	stack_a->stack = stack_a->stack->next;
-	stack_b->stack = stack_b->stack->next;
-	ft_printf("rr\n");
-}
-
-void	rotate_reverse_both(t_cstack *stack_a, t_cstack *stack_b)
-{
-	stack_a->stack = stack_a->stack->previous;
-	stack_b->stack = stack_b->stack->previous;
-	ft_printf("rrr\n");
 }

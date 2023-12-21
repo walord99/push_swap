@@ -1,8 +1,14 @@
 FILES			= 	main.c \
-					cstack.c \
-					cstack_manip.c \
-					input_parsing.c \
-					sort.c
+					cstack/cstack.c \
+					cstack/cstack_manip.c \
+					cstack/cstack_linking_utils.c \
+					cstack/cstack_manip_rotates.c \
+					input_parsing/input_parsing.c \
+					input_parsing/input_parsing_extras.c \
+					sort/sort.c \
+					sort/spin.c \
+					sort/get_move_info.c \
+					sort/find_least_move.c 
 							
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
@@ -18,19 +24,20 @@ LIBFT			= 	$(LIBFT_DIR)/libft.a
 INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR)
 #CC_DEBUG 		= 	-fsanitize=address -fno-omit-frame-pointer
 #L_DEBUG		=	-lasan
-#ERROR_FLAGS 	= 	-Wall -Werror -Wextra
+ERROR_FLAGS 	= 	-Wall -Werror -Wextra
 L_FLAGS			=	-lft
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
-	$(CC) $(OBJ) -L$(LIBFT_DIR) $(L_FLAGS) -o $(NAME)
+	@$(CC) $(OBJ) -L$(LIBFT_DIR) $(L_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
+	@$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
+	@echo "$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $(notdir $<) -o $(notdir $@) -g"
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)/cstack $(OBJ_DIR)/input_parsing $(OBJ_DIR)/sort  
 
 $(LIBFT): libft/Makefile
 	make -C libft
@@ -49,6 +56,6 @@ fclean: clean
 re: clean all
 
 valgrind: all
-	valgrind --leak-check=full ./$(NAME) 2 3 1
+	valgrind --leak-check=full ./$(NAME) 3456 34 2 1                                           
 
 .PHONY: all clean fclean re

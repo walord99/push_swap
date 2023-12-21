@@ -6,13 +6,11 @@
 /*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:21:18 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/19 23:16:31 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2023/12/21 15:14:48 by bplante/Wal      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-static int	is_num(char *str);
 
 int	add_split(char *arg, t_cstack *cstack)
 {
@@ -23,12 +21,11 @@ int	add_split(char *arg, t_cstack *cstack)
 	i = 0;
 	while (args[i] != NULL)
 	{
-		if (is_num(args[i]))
+		if (is_valid_num(args[i]))
 			cstack_add(cstack, ft_atoi(args[i]));
 		else
 		{
 			cstack_clear(cstack);
-			ft_printf_fd("Error\n", 2);
 			free_tab((void **)args, &free);
 			free(cstack);
 			return (-1);
@@ -38,7 +35,39 @@ int	add_split(char *arg, t_cstack *cstack)
 	free_tab((void **)args, &free);
 	return (0);
 }
-// TODO check for dups
+
+bool	has_dup(t_cstack *cstack, t_cstack_ptrs *element)
+{
+	int	num;
+
+	num = element->num;
+	while (true)
+	{
+		if (num == element->next->num && element->next != cstack->stack)
+			return (true);
+		element = element->next;
+		if (element == cstack->stack)
+			return (false);
+	}
+}
+
+t_cstack	*dup_checker(t_cstack *cstack)
+{
+	t_cstack_ptrs	*stack;
+
+	stack = cstack->stack;
+	while (true)
+	{
+		if (has_dup(cstack, stack))
+			break ;
+		stack = stack->next;
+		if (stack == cstack->stack)
+			return (cstack);
+	}
+	cstack_clear(cstack);
+	free(cstack);
+	return (NULL);
+}
 
 t_cstack	*parse_inputs(char **args)
 {
@@ -53,32 +82,15 @@ t_cstack	*parse_inputs(char **args)
 			if (add_split(args[0], cstack) == -1)
 				return (NULL);
 		}
-		else if (is_num(args[0]))
+		else if (is_valid_num(args[0]))
 			cstack_add(cstack, ft_atoi(args[0]));
 		else
 		{
 			cstack_clear(cstack);
 			free(cstack);
-			ft_printf_fd("Error\n", 2);
 			return (NULL);
 		}
 		args++;
 	}
-	return (cstack);
-}
-
-int	is_num(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str[i] == '-')
-		i++;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (false);
-		i++;
-	}
-	return (true);
+	return (dup_checker(cstack));
 }

@@ -33,13 +33,13 @@ int	main(int argc, char **argv)
 	t_cstack	*cstack;
 
 	if (argc < 2)
+		return (1);
+	cstack = parse_inputs(&argv[1]);
+	if (cstack == NULL)
 	{
 		ft_printf_fd("Error\n", 2);
 		return (1);
 	}
-	cstack = parse_inputs(&argv[1]);
-	if (cstack == NULL)
-		return (1);
 	if (!is_sorted(cstack))
 		sort(cstack);
 	cstack_clear(cstack);

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cstack.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:09:49 by bplante           #+#    #+#             */
-/*   Updated: 2023/12/20 13:34:31 by bplante          ###   ########.fr       */
+/*   Updated: 2023/12/21 15:11:29 by bplante/Wal      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// update to keep track of stack size
 void	cstack_add(t_cstack *cstack, int num)
 {
 	t_cstack_ptrs	*new;
@@ -28,19 +27,9 @@ void	cstack_add(t_cstack *cstack, int num)
 		stack = new;
 	}
 	if (stack->next == stack)
-	{
-		stack->next = new;
-		stack->previous = new;
-		new->next = stack;
-		new->previous = stack;
-	}
+		link_new_1(stack, new);
 	else
-	{
-		new->previous = stack->previous;
-		new->next = stack;
-		stack->previous->next = new;
-		stack->previous = new;
-	}
+		link_new_gt1(stack, new);
 	cstack->stack = stack;
 	cstack->size++;
 }
@@ -51,6 +40,8 @@ void	cstack_clear(t_cstack *cstack)
 	t_cstack_ptrs	*temp;
 	t_cstack_ptrs	*stack;
 
+	if (cstack->stack == NULL)
+		return ;
 	stack = cstack->stack;
 	start = stack;
 	temp = stack;
@@ -64,7 +55,7 @@ void	cstack_clear(t_cstack *cstack)
 	}
 }
 
-void	update_min_max(t_cstack *cstack)
+void	set_min_max(t_cstack *cstack)
 {
 	t_cstack_ptrs	*stack;
 
