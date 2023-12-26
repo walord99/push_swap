@@ -1,4 +1,6 @@
 push_swap
+checker
 .vscode
 obj/
+obj_bonus/
 *.dSYM
