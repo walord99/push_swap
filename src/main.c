@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 15:09:40 by bplante           #+#    #+#             */
-/*   Updated: 2024/01/09 15:07:03 by bplante          ###   ########.fr       */
+/*   Updated: 2024/01/09 16:21:20 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 	t_cstack	*cstack;
 
 	if (argc == 1)
-		return 1;
+		return (1);
 	cstack = parse_inputs(&argv[1]);
 	if (cstack == NULL)
 	{
