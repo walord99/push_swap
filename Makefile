@@ -39,7 +39,7 @@ LIBFT			= 	$(LIBFT_DIR)/libft.a
 INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR)
 #CC_DEBUG 		= 	-fsanitize=address -fno-omit-frame-pointer
 #L_DEBUG		=	-lasan
-#ERROR_FLAGS 	= 	-Wall -Werror -Wextra
+ERROR_FLAGS 	= 	-Wall -Werror -Wextra
 L_FLAGS			=	-lft
 
 all: $(NAME)
