@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parsing_extras.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante/Walord <benplante99@gmail.com>     +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:12:53 by bplante/Wal       #+#    #+#             */
-/*   Updated: 2023/12/21 15:14:51 by bplante/Wal      ###   ########.fr       */
+/*   Updated: 2024/01/09 13:21:23 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ int	is_valid_num(char *str)
 
 	sign = 1;
 	i = 0;
+	if (ft_strlen(str) == 0)
+		return (false);
 	if (str[i] == '-')
 	{
 		sign = -1;
 		i++;
+		if (ft_strlen(str) == 1)
+			return (false);
 	}
 	while (str[i] == '0')
 		i++;
@@ -33,9 +37,8 @@ int	is_valid_num(char *str)
 		return (false);
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]))
+		if (!ft_isdigit(str[i++]))
 			return (false);
-		i++;
 	}
 	return (true);
 }
